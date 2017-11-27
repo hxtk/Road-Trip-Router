@@ -1,0 +1,7 @@
+bazel*
+*.iml
+*.jar
+*.key
+*~
+out/
+.idea/
