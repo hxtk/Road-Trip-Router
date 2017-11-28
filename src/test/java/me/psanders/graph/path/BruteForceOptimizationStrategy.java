@@ -5,12 +5,17 @@ import me.psanders.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class BruteForceOptimizationStrategy<L extends Comparable, T extends Number>
     implements OptimizationStrategy<L, T> {
 
+  /** Return the cheapest Hamiltonian Cycle through a complete graph.
+   *
+   * <p>This is the true cheapest cycle, but it has factorial running time. We use this for testing
+   * to verify that other strategies have an acceptable probability of being within a given margin
+   * of error from this optimal cycle.
+   */
   @Override
   public Cycle<L, T> getOptimalCycle(Graph<L, T> graph) {
     List<L> list = new ArrayList<L>();
@@ -27,7 +32,20 @@ public class BruteForceOptimizationStrategy<L extends Comparable, T extends Numb
     return cheapestCycle;
   }
 
-  public List<L> nextLexicographicPermutation(List<L> list) {
+  /** Return the next largest permutation of a list if it exists, otherwise null.
+   *
+   * <p>Take in a list of elements which have a natural ordering. Suppose that the elements are
+   * in descending order of significance, i.e., the least value of one element is greater than the
+   * greatest possible value of its successor (e.g., the digits of numbers, 10 is greater than 09).
+   *
+   * <p>We return the least reordering of the elements which is greater than the current ordering.
+   * Such an ordering exists so long as the elements are not sorted in non-increasing order.
+   *
+   * <p>If the elements are sorted in non-increasing order, there is no valid permutation greater
+   * than the current permutation, so we return null.
+   *
+   */
+  protected List<L> nextLexicographicPermutation(List<L> list) {
 
     // Find the least significant digit which is less than the next least significant digit.
     int j = list.size() - 2;
