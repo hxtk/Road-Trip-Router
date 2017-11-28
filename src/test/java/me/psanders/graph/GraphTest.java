@@ -23,6 +23,8 @@ public class GraphTest {
     testFidelity(new TestGraphFactory().getLinkedGraph());
   }
 
+  // If this fails then our insertion functions do not match our retrieval functions
+  // i.e., `Graph.getWeight(X,Y)` searches
   private void testFidelity(Graph graph) {
     assertNull(graph.getWeight(0, 0));
     assertNull(graph.getWeight(0, 3));
