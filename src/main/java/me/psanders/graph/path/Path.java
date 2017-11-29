@@ -9,11 +9,11 @@ import java.util.List;
 
 import me.psanders.graph.Graph;
 
-public class Path<L> implements Comparable<Path> {
-  private Graph<L, Long> graph;
+public class Path<L, T extends Number> implements Comparable<Path> {
+  private Graph<L, T> graph;
   private List<L> order;
 
-  public Path(Graph<L, Long> graph, List<L> order) {
+  public Path(Graph<L, T> graph, List<L> order) {
     this.graph = graph;
     this.order = order;
   }
@@ -21,7 +21,7 @@ public class Path<L> implements Comparable<Path> {
   public long getCost() {
     long cost = 0;
     for (int i = 1; i < order.size(); ++i) {
-      cost += graph.getWeight(order.get(i - 1), order.get(i));
+      cost += graph.getWeight(order.get(i - 1), order.get(i)).longValue();
     }
     return cost;
   }
