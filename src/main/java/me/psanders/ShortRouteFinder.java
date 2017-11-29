@@ -56,6 +56,7 @@ public class ShortRouteFinder {
         usage(options);
         System.exit(0);
       } else if (!flags.hasOption("key") || places.length < 2) {
+        System.out.println("Please give at least two destinations.");
         usage(options);
         System.exit(1);
       }
