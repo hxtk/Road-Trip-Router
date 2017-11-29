@@ -7,6 +7,7 @@ java_binary(
         "@gson//jar",
         "@okhttp//jar",
         "@okio//jar",
-        "@slf4j//jar",
+        "@slf4j_api//jar",
+        "@slf4j_simple//jar"
     ]
 )

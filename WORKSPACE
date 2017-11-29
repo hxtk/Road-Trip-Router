@@ -4,8 +4,13 @@ maven_jar(
 )
 
 maven_jar(
-	name = "slf4j",
+	name = "slf4j_api",
 	artifact = "org.slf4j:slf4j-api:1.7.25"
+)
+
+maven_jar(
+	name = "slf4j_simple",
+	artifact = "org.slf4j:slf4j-simple:1.7.25"
 )
 
 maven_jar(
