@@ -24,8 +24,11 @@ public class LexicographicPermuterTest {
     end.addAll(Arrays.asList(1, 2, 4, 3));
 
     Iterator<List<Integer>> perm = new LexicographicPermuter<Integer>(list).iterator();
-    Assert.assertTrue(perm.hasNext());
-    Assert.assertEquals(perm.next(), end);
+
+    // Consume initial ordering
+    perm.next();
+
+    Assert.assertEquals(end, perm.next());
   }
 
   @Test
@@ -46,6 +49,12 @@ public class LexicographicPermuterTest {
     ArrayList<Integer> list = new ArrayList();
     list.addAll(Arrays.asList(3, 2, 1, 0));
 
-    Assert.assertFalse(new LexicographicPermuter<Integer>(list).iterator().hasNext());
+    Iterator<List<Integer>> it = new LexicographicPermuter<Integer>(list).iterator();
+
+    // Consume the initial item: We can always return at least one item because the first item
+    // is the permutation passed in.
+    it.next();
+
+    Assert.assertFalse(it.hasNext());
   }
 }
