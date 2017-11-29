@@ -34,6 +34,9 @@ public class ShortRouteFinder {
     this.args = args;
   }
 
+  /** Parse command line arguments and deliver a route between the points listed.
+   *
+   */
   public Cycle getRoute() {
     Options options = new Options();
     options.addOption("k", "key", true, "Google Maps Services API Key");
@@ -93,7 +96,10 @@ public class ShortRouteFinder {
           new MatrixGraph<>(labels, matrix),
           new GeneticOptimizationStrategy<String, Long>(new Random())
       ).getOptimalCycle();
+
+    // Error handling
     } catch (UnrecognizedOptionException e) {
+      // This will be triggered if a user passes in a flag that is not in our list.
       System.out.println("Option \"" + e.getOption() + "\" Not found. See usage:");
       usage(options);
       System.exit(1);
@@ -108,6 +114,12 @@ public class ShortRouteFinder {
     return null;
   }
 
+  /** Print the usage message for the given options.
+   *
+   * For more information, see the documentation for HelpFormatter:
+   *     https://commons.apache.org/proper/commons-cli/usage.html#UsageHelp
+   *     https://commons.apache.org/proper/commons-cli/javadocs/api-release/org/apache/commons/cli/HelpFormatter.html
+   */
   private void usage(Options options) {
     new HelpFormatter().printHelp("RoutePlanner",
         "Find a (nearly) optimal route for your next road trip.", options,

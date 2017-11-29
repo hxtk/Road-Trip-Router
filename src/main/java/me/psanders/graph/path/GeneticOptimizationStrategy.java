@@ -31,6 +31,8 @@ public class GeneticOptimizationStrategy<L, T extends Number>
   // Crossover in Genetic Algorithms," Proc. First Workshop Parallel Problem Solving from Nature,
   // Springer-Verlag, Berlin, 1990. pp. 38-47.
   //
+  // Note: this paper focused on binary encoding while I am using permutation encoding, so not all
+  //       of the information will carry over 1:1. In testing I found I had to modify their values.
   // Modified from their values: 50 species did not optimize quickly enough. Increasing to 500
   // obviated the large number of generations, permitting us to reduce to 100 instead of 1000.
   static final int POPULATION = 500;
@@ -63,7 +65,8 @@ public class GeneticOptimizationStrategy<L, T extends Number>
       paths[i] = new Cycle(graph, order);
     }
 
-    // Number of swaps such that CROSSOVER is the probability of an element remaining unmoved
+    // Number of swaps such that CROSSOVER is the probability of an element remaining unmoved.
+    // This does not guarantee an exact crossover rate, but the average will be correct.
     int swaps = (int) (Math.log(CROSSOVER) / Math.log(1.0D - (2.0D / (double) (numNodes))));
 
     for (int i = 0; i < GENERATIONS; ++i) {

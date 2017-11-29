@@ -34,8 +34,11 @@ public class GeneticOptimizationStrategyTest {
   //private Cycle<Integer, Integer> optimalPath;
   private Graph<Integer, Integer> graph;
 
+  /**
+   * Create the graph instance
+   */
   @Before
-  public void computeOptimalSolutions() {
+  public void setUp() {
     HashMap<Integer, Integer> labels = new HashMap();
     for (int i = 0; i < MATRIX.length; ++i) {
       labels.put(i, i);
@@ -48,7 +51,7 @@ public class GeneticOptimizationStrategyTest {
   }
 
   @Test
-  public void getsCloseEnough() {
+  public void withinFivePercentOfOptimal() {
     Cycle genetic = new GeneticOptimizationStrategy(new Random(0)).getOptimalCycle(graph);
     double cost = (double) genetic.getCost();
     Assert.assertTrue(0.95*cost < OPTIMAL_COST);

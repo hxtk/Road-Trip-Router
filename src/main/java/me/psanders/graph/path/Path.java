@@ -18,6 +18,11 @@ public class Path<L, T extends Number> implements Comparable<Path> {
     this.order = order;
   }
 
+  /** Get the cumulative cost of visiting every node in the path, in the order provided.
+   *
+   * We assume here that the path is valid, e.g., if there is no edge between two consecutive
+   * nodes in the correct direction, this code will throw an error.
+   */
   public long getCost() {
     long cost = 0;
     for (int i = 1; i < order.size(); ++i) {
@@ -26,6 +31,9 @@ public class Path<L, T extends Number> implements Comparable<Path> {
     return cost;
   }
 
+  /** Get the list of nodes in the order that this path visits them.
+   *
+   */
   public List<L> getOrder() {
     return order;
   }
