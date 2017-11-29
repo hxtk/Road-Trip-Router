@@ -22,7 +22,8 @@ import me.psanders.graph.Graph;
  * mutation rather than two-segment.
  *
  */
-public class GeneticOptimizationStrategy<T extends Number> implements OptimizationStrategy<String, T> {
+public class GeneticOptimizationStrategy<L, T extends Number>
+    implements OptimizationStrategy<L, T> {
 
   private Random random;
 
@@ -42,15 +43,15 @@ public class GeneticOptimizationStrategy<T extends Number> implements Optimizati
 
   /** Genetic algorithm to optimize a path through a complete graph.
    *
-   * @return Path with a high probability of being optimal, depending on the parameters above
+   * @return Cycle with a high probability of being optimal, depending on the parameters above
    */
   @Override
-  public Cycle getOptimalCycle(Graph<String, T> graph) {
+  public Cycle getOptimalCycle(Graph<L, T> graph) {
     int numNodes = graph.getNodes().size();
     int batchSize = Math.max(numNodes * 2, POPULATION);
     int numParents = batchSize / 10;
 
-    ArrayList<String> labels = new ArrayList();
+    ArrayList<L> labels = new ArrayList();
     labels.addAll(graph.getNodes());
     Cycle start = new Cycle(graph, labels);
 
