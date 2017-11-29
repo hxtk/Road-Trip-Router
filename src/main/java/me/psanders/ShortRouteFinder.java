@@ -10,6 +10,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.DistanceMatrixApi;
@@ -32,6 +33,7 @@ public class ShortRouteFinder {
   public Cycle getRoute() throws ParseException {
     Options options = new Options();
     options.addOption("k", "key", true, "Google Maps Services API Key");
+    options.addOption("h", "help", false, "Print this usage message");
 
     // Commented out by hxtk (2017-10-18) pending addition of new features
     //options.addOption("mode", true, "Transportation mode (uses Google default)");
@@ -39,6 +41,21 @@ public class ShortRouteFinder {
     //options.addOption("scenic", false, "Selects route that avoids highways and toll roads");
 
     CommandLine flags = new GnuParser().parse(options, args);
+
+    // Print help if they asked for it
+    if (flags.hasOption("help")) {
+      new HelpFormatter().printHelp("Road Trip Router",
+          "Find a (nearly) optimal route for your next road trip", options,
+          "Please report any bugs or comments to https://github.com/hxtk/Road-Trip-Router",
+          true);
+      System.exit(0);
+    } else if (!flags.hasOption("key")) {  // Verify that a key is provided.
+      new HelpFormatter().printHelp("RoutePlanner",
+          "Find a (nearly) optimal route for your next road trip", options,
+          "Please report any bugs or comments to https://github.com/hxtk/Road-Trip-Router",
+          true);
+      System.exit(1);
+    }
     String[] places = flags.getArgs();
 
     GeoApiContext context = new GeoApiContext.Builder().apiKey(flags.getOptionValue("key")).build();
