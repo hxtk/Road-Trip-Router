@@ -28,8 +28,11 @@ public class BruteForceOptimizationStrategy<L extends Comparable<L>, T extends N
     // Check every permutation and store the shortest one.
     Cycle<L, T> cheapestCycle = new Cycle<L, T>(graph, list.subList(0, list.size()));
     for (List<L> it: new LexicographicPermuter<L>(list)) {
-      Cycle<L, T> tmpCycle = new Cycle<L, T>(graph, list.subList(0, list.size()));
-      if (tmpCycle.getCost() < cheapestCycle.getCost()) cheapestCycle = tmpCycle;
+      Cycle<L, T> tmpCycle = new Cycle<L, T>(graph, it);
+
+      if (tmpCycle.getCost() < cheapestCycle.getCost()) {
+        cheapestCycle = tmpCycle;
+      }
     }
 
     return cheapestCycle;
