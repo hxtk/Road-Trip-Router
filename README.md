@@ -21,7 +21,7 @@ java -jar RoutePlanner_deploy.jar --key "..."
 
 ## Features
 
-### In progress
+### Finished
 
 - Find a pseudo-optimal path by distance using a genetic algorithm
 
