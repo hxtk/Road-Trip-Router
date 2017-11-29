@@ -13,7 +13,7 @@ Bazel `BUILD` and `WORKSPACE` files should follow the best practices defined at 
 
 ### Deploying / Publishing
 
-You must supply your own Google Maps API key under the `--key` flag, as I cannot afford to support the large number of API requests this generates ;) (`n(n+1)/2` as the number of destinations).
+You must supply your own Google Maps API key under the `--key` flag, as I cannot afford to support the large number of API requests this generates ;) (`O(n²)` as the number of destinations).
 
 ```BASH
 java -jar RoutePlanner_deploy.jar --key "..."
