@@ -1,3 +1,5 @@
+// Copyright: Peter Sanders. All rights reserved.
+// Date: 2017-11-29
 
 package me.psanders.graph.path;
 
