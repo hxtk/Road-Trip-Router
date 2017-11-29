@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.DistanceMatrixElement;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.GeoApiContext;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.DistanceMatrixApiRequest;
