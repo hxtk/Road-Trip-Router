@@ -3,7 +3,7 @@
 
 ## Installing / Getting started
 
-Install [Bazel](https://bazel.build/) and compile this project by running `bazel build //:RoutePlanner`.
+Install [Bazel](https://bazel.build/) and compile this project by running `bazel build RoutePlanner`.
 
 ## Developing
 
