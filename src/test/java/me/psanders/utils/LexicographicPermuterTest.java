@@ -32,6 +32,22 @@ public class LexicographicPermuterTest {
   }
 
   @Test
+  public void sortsAfterFirstChangedValue() {
+    ArrayList<Integer> list = new ArrayList();
+    list.addAll(Arrays.asList(1, 2, 4, 3));
+
+    ArrayList<Integer> end = new ArrayList();
+    end.addAll(Arrays.asList(1, 3, 2, 4));
+
+    Iterator<List<Integer>> perm = new LexicographicPermuter<Integer>(list).iterator();
+
+    // Consume initial ordering
+    perm.next();
+
+    Assert.assertEquals(end, perm.next());
+  }
+
+  @Test
   public void findsCorrectQuantityOfPermutations() {
     ArrayList<Integer> list = new ArrayList();
     list.addAll(Arrays.asList(0, 1, 2, 3));
