@@ -1,5 +1,5 @@
 // Copyright: Peter Sanders. All rights reserved.
-// Date: 2017-10-13
+// Date: 2017-11-29
 
 package me.psanders.graph;
 
@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import me.psanders.graph.Graph;
 import me.psanders.graph.MatrixGraph;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public class GraphTest {
 
   @Test
@@ -26,23 +29,23 @@ public class GraphTest {
   // If this fails then our insertion functions do not match our retrieval functions
   // i.e., `Graph.getWeight(X,Y)` searches
   private void testFidelity(Graph graph) {
-    assertNull(graph.getWeight(0, 0));
-    assertNull(graph.getWeight(0, 3));
-    assertNull(graph.getWeight(1, 1));
-    assertNull(graph.getWeight(2, 0));
-    assertNull(graph.getWeight(2, 2));
-    assertNull(graph.getWeight(3, 1));
-    assertNull(graph.getWeight(3, 2));
-    assertNull(graph.getWeight(3, 3));
+    assertNull(graph.getWeight("a", "a"));
+    assertNull(graph.getWeight("a", "d"));
+    assertNull(graph.getWeight("b", "b"));
+    assertNull(graph.getWeight("c", "a"));
+    assertNull(graph.getWeight("c", "c"));
+    assertNull(graph.getWeight("d", "b"));
+    assertNull(graph.getWeight("d", "c"));
+    assertNull(graph.getWeight("d", "d"));
 
-    assertEquals(graph.getWeight(0, 1), 2);
-    assertEquals(graph.getWeight(0, 2), 3);
-    assertEquals(graph.getWeight(1, 0), 1);
-    assertEquals(graph.getWeight(1, 2), 2);
-    assertEquals(graph.getWeight(1, 3), 3);
-    assertEquals(graph.getWeight(2, 1), 3);
-    assertEquals(graph.getWeight(2, 3), 4);
-    assertEquals(graph.getWeight(3, 0), 1);
+    assertEquals(2, graph.getWeight("a", "b"));
+    assertEquals(3, graph.getWeight("a", "c"));
+    assertEquals(1, graph.getWeight("b", "a"));
+    assertEquals(2, graph.getWeight("b", "c"));
+    assertEquals(3, graph.getWeight("b", "d"));
+    assertEquals(3, graph.getWeight("c", "b"));
+    assertEquals(4, graph.getWeight("c", "d"));
+    assertEquals(1, graph.getWeight("d", "a"));
   }
 
 }

@@ -5,5 +5,6 @@ java_library(
         "//src/main/java/me/psanders:__pkg__",
         "//src/main/java/me/psanders/graph/path:__pkg__",
         "//src/test/java/me/psanders/graph/path:__pkg__",
+        "//src/test/java/me/psanders/graph:__pkg__",
     ]
 )

@@ -39,7 +39,7 @@ class TestGraphFactory {
 
     vertices.put("a", 0);
     vertices.put("b", 1);
-    vertices.put("b", 2);
+    vertices.put("c", 2);
     vertices.put("d", 3);
 
     Integer[][] adjMatrix = {
