@@ -12,6 +12,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.UnrecognizedOptionException;
 
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrixElement;
@@ -24,8 +25,20 @@ import me.psanders.graph.path.Cycle;
 import me.psanders.graph.path.HCycleFinder;
 import me.psanders.graph.path.GeneticOptimizationStrategy;
 import me.psanders.graph.MatrixGraph;
-import org.apache.commons.cli.UnrecognizedOptionException;
 
+/** Factory class for Cycle based on a list of geographic locations.
+ *
+ * <p>We pass in a list of arguments that are used to create a Google Maps
+ * API instance, look up the set of places from that list, and optimize a
+ * route between those places using a Genetic Algorithm.
+ *
+ * <p>The arguments are designed to be formatted as arguments coming in from
+ * the command line, i.e., the <code>args</code> passed to a program entry.
+ *
+ * <p>Distinct places are delimited by the distinct elements of the array.
+ * Consult your command line's documentation for more information. Usually
+ * you will group using quotes ('"') or escaped spaces ('\ ').
+ */
 public class ShortRouteFinder {
 
   private String[] args;
@@ -61,7 +74,7 @@ public class ShortRouteFinder {
         System.exit(1);
       }
 
-      // Retrieve the
+      // Retrieve the matrix of distances between each pair of places passed in to args.
       GeoApiContext context = new GeoApiContext.Builder().apiKey(flags.getOptionValue("key")).build();
       DistanceMatrixApiRequest req = DistanceMatrixApi.getDistanceMatrix(
           context, places, places);
