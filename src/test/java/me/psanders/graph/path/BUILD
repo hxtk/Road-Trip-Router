@@ -11,7 +11,7 @@ java_library(
 
 java_test(
     name = "GeneticOptimizationStrategyTest",
-    size = "large",
+    size = "small",
     runtime_deps = [
         ":optimization_tests"
     ]
