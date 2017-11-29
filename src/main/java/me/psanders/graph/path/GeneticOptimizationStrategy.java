@@ -29,9 +29,12 @@ public class GeneticOptimizationStrategy<T extends Number> implements Optimizati
   // DeJong, K.A. and Spears, W.M. "An Analysis of the Interacting Roles of Population Size and
   // Crossover in Genetic Algorithms," Proc. First Workshop Parallel Problem Solving from Nature,
   // Springer-Verlag, Berlin, 1990. pp. 38-47.
-  static final int POPULATION = 50;
+  //
+  // Modified from their values: 50 species did not optimize quickly enough. Increasing to 500
+  // obviated the large number of generations, permitting us to reduce to 100 instead of 1000.
+  static final int POPULATION = 500;
   static final double CROSSOVER = 0.6;
-  static final int GENERATIONS = 1000;
+  static final int GENERATIONS = 100;
 
   public GeneticOptimizationStrategy(Random random) {
     this.random = random;
@@ -72,7 +75,7 @@ public class GeneticOptimizationStrategy<T extends Number> implements Optimizati
       // NOTE: starts after the end of the copy operation above
       for (int j = best.length; j < batchSize; ++j) {
         // We mod with `numParents` to achieve a round robin, repeatedly using each parent in turn.
-        List<String> order = best[j % numParents].getOrder();
+        List<String> order = new ArrayList(best[j % numParents].getOrder());
 
         // Swap enough times such that we probably have 60% crossover, as per DeJong & Spears above.
         for (int k = 0; k < swaps; ++k) {
