@@ -11,6 +11,8 @@ We try to follow the [Google Java Styleguide](https://google.github.io/styleguid
 
 Bazel `BUILD` and `WORKSPACE` files should follow the best practices defined at [Bazel and Java](https://docs.bazel.build/versions/master/bazel-and-java.html) and [Best Practices](https://docs.bazel.build/versions/master/best-practices.html).
 
+Finally, the entry point is in `me.psanders.TspSolver`.
+
 ### Deploying / Publishing
 
 You must supply your own Google Maps API key under the `--key` flag, as I cannot afford to support the large number of API requests this generates ;) (`O(n²)` as the number of destinations).
