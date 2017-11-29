@@ -3,8 +3,8 @@
 
 package me.psanders.utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -58,10 +58,11 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
      */
     @Override
     public List<T> next() {
-      List<T> old = items.subList(0, items.size());
+      List<T> old = new ArrayList(items);
 
-      // Find the least significant digit which is less than the next least significant digit.
-      int j = items.size() - 2;
+      // Find the least significant digit which is less than its successor.
+      int j = items.size() - 2;  // Begin at the second to last element, since the last element has
+                                 // no successor.
       while (j >= 0) {
         if (items.get(j).compareTo(items.get(j + 1)) < 0) {
           break;
@@ -80,17 +81,21 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
       // we selected j, j+1 is a safe starting value.
       int k = j + 1;
       for (int i = j + 2; i < items.size(); ++i) {
-        if (items.get(i).compareTo(items.get(k)) < 0 && items.get(j).compareTo(items.get(i)) <= 0) {
+        T atI = items.get(i);
+        T atJ = items.get(j);
+        T atK = items.get(k);
+        if (atI.compareTo(atK) < 0 && atI.compareTo(atJ) > 0) {
           k = i;
         }
       }
 
       // Swap the values at j and k, sorting all values after j.
       Collections.swap(items, j, k);
-      List<T> end = items.subList(j+1, items.size());
+
+      List<T> end = new ArrayList<T>(items.subList(j+1, items.size()));
       Collections.sort(end);
 
-      items = items.subList(0, j+1);
+      items = new ArrayList<T>(items.subList(0, j+1));
       items.addAll(end);
 
       return old;
