@@ -5,11 +5,8 @@ java_library(
         "//src/main/java/me/psanders/utils:utils",
         "@junit//jar"
     ],
-    visibility = [
-        "//src/test/java/me/psanders/utils:__pkg__"
-    ]
+    visibility = []
 )
-
 
 java_test(
     name = "LexicographicPermuterTest",
