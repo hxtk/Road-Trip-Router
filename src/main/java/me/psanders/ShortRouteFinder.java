@@ -9,7 +9,6 @@ import java.util.Random;
 
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrixElement;
-import com.google.maps.model.DistanceMatrixElementStatus;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.ParseException;
@@ -25,6 +24,7 @@ import me.psanders.graph.path.Cycle;
 import me.psanders.graph.path.HCycleFinder;
 import me.psanders.graph.path.GeneticOptimizationStrategy;
 import me.psanders.graph.MatrixGraph;
+import org.apache.commons.cli.UnrecognizedOptionException;
 
 public class ShortRouteFinder {
 
@@ -50,19 +50,14 @@ public class ShortRouteFinder {
 
       // Print help if they asked for it
       if (flags.hasOption("help")) {
-        new HelpFormatter().printHelp("Road Trip Router",
-            "Find a (nearly) optimal route for your next road trip", options,
-            "Please report any bugs or comments to https://github.com/hxtk/Road-Trip-Router",
-            true);
+        usage(options);
         System.exit(0);
       } else if (!flags.hasOption("key") || places.length < 2) {
-        new HelpFormatter().printHelp("RoutePlanner",
-            "Find a (nearly) optimal route for your next road trip", options,
-            "Please report any bugs or comments to https://github.com/hxtk/Road-Trip-Router",
-            true);
+        usage(options);
         System.exit(1);
       }
 
+      // Retrieve the
       GeoApiContext context = new GeoApiContext.Builder().apiKey(flags.getOptionValue("key")).build();
       DistanceMatrixApiRequest req = DistanceMatrixApi.getDistanceMatrix(
           context, places, places);
@@ -81,7 +76,7 @@ public class ShortRouteFinder {
           switch (element.status) {
             case NOT_FOUND:
               System.out.println("We couldn't resolve \"" + places[i]
-                  + "\" so we're trying to route around it...");
+                  + "\" so we're trying to route around it.");
               // Fallthrough
             case ZERO_RESULTS:
               // The algorithm will optimize away from this leg if the cost is arbitrarily high.
@@ -93,11 +88,15 @@ public class ShortRouteFinder {
         }
       }
 
-      HCycleFinder finder = new HCycleFinder(
-          new MatrixGraph<String, Long>(labels, matrix),
-          new GeneticOptimizationStrategy<String, Long>(new Random()));
-
-      return finder.getOptimalCycle();
+      // Find the optimal route.
+      return new HCycleFinder(
+          new MatrixGraph<>(labels, matrix),
+          new GeneticOptimizationStrategy<String, Long>(new Random())
+      ).getOptimalCycle();
+    } catch (UnrecognizedOptionException e) {
+      System.out.println("Option \"" + e.getOption() + "\" Not found. See usage:");
+      usage(options);
+      System.exit(1);
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
@@ -107,5 +106,12 @@ public class ShortRouteFinder {
     }
 
     return null;
+  }
+
+  private void usage(Options options) {
+    new HelpFormatter().printHelp("RoutePlanner",
+        "Find a (nearly) optimal route for your next road trip.", options,
+        "Please report any bugs or comments to https://github.com/hxtk/Road-Trip-Router",
+        true);
   }
 }
