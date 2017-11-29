@@ -91,12 +91,7 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
 
       // Swap the values at j and k, sorting all values after j.
       Collections.swap(items, j, k);
-
-      List<T> end = new ArrayList<T>(items.subList(j+1, items.size()));
-      Collections.sort(end);
-
-      items = new ArrayList<T>(items.subList(0, j+1));
-      items.addAll(end);
+      Collections.sort(items.subList(j+1, items.size()));
 
       return old;
     }
