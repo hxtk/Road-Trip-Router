@@ -7,7 +7,9 @@ Install [Bazel](https://bazel.build/) and compile this project by running `bazel
 
 ## Developing
 
-We try to follow the [Google Java Styleguide](https://google.github.io/styleguide/javaguide.html). The project 
+We try to follow the [Google Java Styleguide](https://google.github.io/styleguide/javaguide.html), but it is not necessary to be perfect. Feel free to submit pull requests or issues regarding code style and idioms if they are strictly incorrect, else prefer consistency with code already found.
+
+Bazel `BUILD` and `WORKSPACE` files should follow the best practices defined at [Bazel and Java](https://docs.bazel.build/versions/master/bazel-and-java.html) and [Best Practices](https://docs.bazel.build/versions/master/best-practices.html).
 
 ### Deploying / Publishing
 
