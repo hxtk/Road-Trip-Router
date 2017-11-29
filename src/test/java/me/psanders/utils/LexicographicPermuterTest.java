@@ -74,4 +74,15 @@ public class LexicographicPermuterTest {
 
     Assert.assertFalse(it.hasNext());
   }
+
+  @Test
+  public void outputIsStableAsIteratorContinues() {
+    ArrayList<Integer> list = new ArrayList();
+    list.addAll(Arrays.asList(0, 1, 2, 3));
+
+    Iterator<List<Integer>> perm = new LexicographicPermuter<Integer>(list).iterator();
+    List<Integer> first = perm.next();
+    List<Integer> second = perm.next();
+    Assert.assertNotEquals(first, second);
+  }
 }
