@@ -91,7 +91,6 @@ public class GeneticOptimizationStrategy<L, T extends Number>
 
       // Sort such that best paths are at the beginning of the list
       Arrays.sort(paths);
-      System.out.println(paths[0]);
     }
 
     return paths[0];
