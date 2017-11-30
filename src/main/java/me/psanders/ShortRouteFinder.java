@@ -4,6 +4,7 @@
 package me.psanders;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -128,6 +129,9 @@ public class ShortRouteFinder {
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
+    } catch (ConnectException e) {
+      System.out.println("Connection failed. Are you sure you're connected to the internet?");
+      System.exit(1);
     } catch (ApiException | InterruptedException | IOException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
@@ -275,3 +279,4 @@ public class ShortRouteFinder {
         true);
   }
 }
+
