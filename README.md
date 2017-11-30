@@ -26,12 +26,16 @@ java -jar RoutePlanner_deploy.jar --key "..."
 ### Finished
 
 - Find a pseudo-optimal path by distance using a genetic algorithm
-
-### Roadmap
-
 - Flags for various route parameters (i.e., "avoid tolls/ferries/highways",
 	cost by time instead of distance
+
+### In Progress
+
 - Compound flags, e.g., `--scenic` or `-S` avoids highways/tolls and sorts by distance (open issues for compound flags you would like to see).
+
+### Road Map
+
+> Nothing to see here.
 
 ## Contributing
 
