@@ -1,0 +1,24 @@
+# Copied from https://github.com/korfuri/bazel-travis/blob/master/.travis.yml
+# Updated to use Bazel 0.8.0
+
+dist: trusty
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - wget
+      - pkg-config
+
+before_install:
+  - wget https://github.com/bazelbuild/bazel/releases/download/0.8.0/bazel_0.8.0-linux-x86_64.deb
+  - sha256sum -c tools/bazel_0.8.0-linux-x86_64.deb.sha256 bazel_0.8.0-linux-x86_64.deb
+  - sudo dpkg -i bazel_0.8.0-linux-x86_64.deb
+
+# END copied code
+
+script:
+  - bazel test //src/test/java/me/psanders/utils:all
+  - bazel test //src/test/java/me/psanders/graph:all
+  - bazel test //src/test/java/me/psanders/graph/path:all
