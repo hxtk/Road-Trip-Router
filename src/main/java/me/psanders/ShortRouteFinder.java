@@ -8,6 +8,7 @@ import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.apache.commons.cli.AlreadySelectedException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
@@ -122,14 +123,17 @@ public class ShortRouteFinder {
       // This will be triggered if a user passes in a flag that is not in our list.
       System.out.println("Option \"" + e.getOption() + "\" Not found. See usage:");
       usage(options);
+    } catch (AlreadySelectedException e) {
+      System.out.println(e.getLocalizedMessage() + "\n");
+      usage(options);
     } catch (IllegalStateException | MissingOptionException e) {
       System.out.println("You must include a valid Google Maps Services API key\n");
       usage(options);
+    } catch (ConnectException e) {
+      System.out.println("Connection failed. Are you sure you're connected to the internet?");
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
-    } catch (ConnectException e) {
-      System.out.println("Connection failed. Are you sure you're connected to the internet?");
     } catch (ApiException | InterruptedException | IOException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
