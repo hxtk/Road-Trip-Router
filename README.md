@@ -45,4 +45,6 @@ Be aware that the maintainer reserves the right to deny pull requests. To make s
 
 ## Licensing
 
-All rights reserved. This code is free to use (with credit to its author(s)) for non-commercial purposes insofar as its various dependencies and their respective licenses allow. For commercial licensing, contact the maintainer.
+Where this section contradicts the information in `LICENSE`, one should defer to the information in `LICENSE`. Where the licenses of this project's dependencies contradict `LICENSE` and are more restrictive, defer to those projects' respective licenses.
+
+This project is under an MIT license. Make free use of the code, but reproductions must retain credit to the listed authors. This software is free as in free speech, but due to the limitations of the Google Maps Services API, it may not be free as in free beer for your use case (i.e., free users are limited to 2500 requests daily at the time of this writing).
