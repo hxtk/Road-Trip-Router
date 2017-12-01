@@ -13,8 +13,7 @@ class TspSolver {
   public static void main(String[] args) {
     Cycle<String, Long> path = new ShortRouteFinder(args).getRoute();
     if (path == null) {
-      System.out.println("An unexpected error has occurred and no route was found.");
-      System.exit(2);
+      System.exit(1);
     }
 
     // Print all of the destinations in the order prescribed by the router

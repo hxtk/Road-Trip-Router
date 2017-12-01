@@ -117,21 +117,19 @@ public class ShortRouteFinder {
       ).getOptimalCycle();
 
     // Error handling
+    // These blocks intentionally fall through to the `return null` below.
     } catch (UnrecognizedOptionException e) {
       // This will be triggered if a user passes in a flag that is not in our list.
       System.out.println("Option \"" + e.getOption() + "\" Not found. See usage:");
       usage(options);
-      System.exit(1);
     } catch (IllegalStateException | MissingOptionException e) {
       System.out.println("You must include a valid Google Maps Services API key\n");
       usage(options);
-      System.exit(1);
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
     } catch (ConnectException e) {
       System.out.println("Connection failed. Are you sure you're connected to the internet?");
-      System.exit(1);
     } catch (ApiException | InterruptedException | IOException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
