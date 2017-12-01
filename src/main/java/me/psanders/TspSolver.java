@@ -1,12 +1,11 @@
-// Copyright: Peter Sanders. All rights reserved.
-// Date: 2017-10-11
+// Copyright (c) Peter Sanders. All rights reserved.
+// Date: 2017-12-01
 
 package me.psanders;
 
 import me.psanders.graph.path.Cycle;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 class TspSolver {
 

@@ -19,6 +19,9 @@ public class HCycleFinder {
   }
 
   public Cycle getOptimalCycle() {
+    if (graph == null) {
+      return null;
+    }
     return strategy.getOptimalCycle(this.graph);
   }
 }

@@ -22,3 +22,4 @@ script:
   - bazel test //src/test/java/me/psanders/utils:all
   - bazel test //src/test/java/me/psanders/graph:all
   - bazel test //src/test/java/me/psanders/graph/path:all
+  - bazel test //src/test/java/me/psanders/maps:all

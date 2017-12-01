@@ -1,13 +1,14 @@
-// Copyright: Peter Sanders. All rights reserved.
-// Date: 2017-11-29
+// Copyright (c) Peter Sanders. All rights reserved.
+// Date: 2017-12-01
 
 package me.psanders;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.HashMap;
 import java.util.Random;
 
+import com.google.maps.model.DistanceMatrix;
+import me.psanders.maps.DistanceMatrixFactory;
 import org.apache.commons.cli.AlreadySelectedException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.OptionBuilder;
@@ -19,19 +20,14 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.UnrecognizedOptionException;
 
-import com.google.maps.DirectionsApi;
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
-import com.google.maps.model.DistanceMatrixElement;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.TravelMode;
 import com.google.maps.errors.ApiException;
 
 import me.psanders.graph.path.Cycle;
 import me.psanders.graph.path.HCycleFinder;
 import me.psanders.graph.path.GeneticOptimizationStrategy;
-import me.psanders.graph.MatrixGraph;
+import me.psanders.graph.Graph;
+import me.psanders.maps.LocationGraphFactory;
 
 /** Factory class for Cycle based on a list of geographic locations.
  *
@@ -76,44 +72,17 @@ public class ShortRouteFinder {
         System.exit(1);
       }
 
-      // Retrieve the matrix of distances between each pair of places passed in to args.
-      DistanceMatrix distMatrix = getDistMatrix(flags, places);
+      GeoApiContext context = new GeoApiContext.Builder().
+          apiKey(flags.getOptionValue("key")).build();
+      DistanceMatrixFactory matrixFactory = new DistanceMatrixFactory(context, places, flags);
 
-      // Generate the list of labels to look up matrix indices.
-      HashMap<String, Integer> labels = new HashMap<String, Integer>();
-      for (int i = 0; i < places.length; ++i) {
-        labels.put(places[i], i);
-      }
 
-      // Convert the DistanceMatrix object to a 2D array for the MatrixGraph.
-      Long[][] matrix = new Long[places.length][places.length];
-      for (int i = 0; i < places.length; ++i) {
-        for (int j = 0; j < places.length; ++j) {
-          if (i == j) continue;  // Skip the diagonal axis.
-
-          DistanceMatrixElement element = distMatrix.rows[i].elements[j];
-          switch (element.status) {
-            case NOT_FOUND:
-              System.out.println("We couldn't resolve \"" + places[i]
-                  + "\" so we're trying to route around it.");
-              // Fallthrough
-            case ZERO_RESULTS:
-              // The algorithm will optimize away from this leg if the cost is arbitrarily high.
-              matrix[i][j] = matrix[j][i] = Long.MAX_VALUE / 2;
-              break;
-            default:
-              if (flags.hasOption("fast")) {
-                matrix[i][j] = element.duration.inSeconds;
-              } else {
-                matrix[i][j] = element.distance.inMeters;
-              }
-          }
-        }
-      }
+      // Retrieve the graph of distances between each pair of places passed in to args.
+      Graph graph = new LocationGraphFactory(matrixFactory, places, flags).build();
 
       // Find the optimal route.
       return new HCycleFinder(
-          new MatrixGraph<>(labels, matrix),
+          graph,
           new GeneticOptimizationStrategy<String, Long>(new Random())
       ).getOptimalCycle();
 
@@ -129,8 +98,6 @@ public class ShortRouteFinder {
     } catch (IllegalStateException | MissingOptionException e) {
       System.out.println("You must include a valid Google Maps Services API key\n");
       usage(options);
-    } catch (ConnectException e) {
-      System.out.println("Connection failed. Are you sure you're connected to the internet?");
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
@@ -140,50 +107,6 @@ public class ShortRouteFinder {
     }
 
     return null;
-  }
-
-  /** Get the distance matrix containing the distance between each pair of places passed in.
-   *
-   * <p>Flags are used to control the API Request. For more details, see `getOptions`.
-   *
-   */
-  private DistanceMatrix getDistMatrix(CommandLine flags, String[] places)
-      throws IllegalStateException, InterruptedException, ApiException, IOException {
-    GeoApiContext context = new GeoApiContext.Builder().
-        apiKey(flags.getOptionValue("key")).build();
-
-    DistanceMatrixApiRequest request = DistanceMatrixApi.
-        getDistanceMatrix(context, places, places);
-
-    if (flags.hasOption("scenic")) {
-      request = request.avoid(DirectionsApi.RouteRestriction.HIGHWAYS)
-          .avoid(DirectionsApi.RouteRestriction.TOLLS);
-    }
-    if (flags.hasOption("no-fee")) {
-      request = request.avoid(DirectionsApi.RouteRestriction.TOLLS)
-          .avoid(DirectionsApi.RouteRestriction.FERRIES);
-    }
-    if (flags.hasOption("mode")) {
-      switch (flags.getOptionValue("mode")) {
-        case "driving":
-          request = request.mode(TravelMode.DRIVING);
-          break;
-        case "transit":
-          request = request.mode(TravelMode.TRANSIT);
-          break;
-        case "bicycling":
-          request = request.mode(TravelMode.BICYCLING);
-          break;
-        case "walking":
-          request = request.mode(TravelMode.WALKING);
-          break;
-        default:
-          System.out.println("Invalid transportation mode. Options include:");
-          System.out.println("    driving, transit, bicycling, walking");
-      }
-    }
-
-    return request.await();
   }
 
   /** Produces a parser that will process the arguments below:
