@@ -58,11 +58,36 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
      */
     @Override
     public List<T> next() {
-      List<T> old = new ArrayList(items);
-
       // Find the least significant digit which is less than its successor.
+      int j = getLastLessThanSuccessor();
+
+      // Find the smallest value greater than the value at j which succeeds j. Note, due to the way
+      // we selected j, j+1 is a safe starting value.
+      int k = getLeastLargerValueInTail(j);
+
+      List<T> old = new ArrayList(items);
+      if (j < 0) {
+        // If there is no index j satisfying the above constraint, then we have reached the largest
+        // lexicographic permutation.
+        items = null;
+        return old;
+      }
+      // Swap the values at j and k, sorting all values after j.
+      Collections.swap(items, j, k);
+      Collections.sort(items.subList(j+1, items.size()));
+
+      return old;
+    }
+
+    /** Get the index of the last value which has a strictly smaller value than its successor.
+     *
+     * <p>For example, in the list <code>[1, 2, 3, 4, 3]</code>, this would be `2` because
+     * `3 < 4` but `4 >= 3`.
+     *
+     */
+    private int getLastLessThanSuccessor() {
       int j = items.size() - 2;  // Begin at the second to last element, since the last element has
-                                 // no successor.
+      // no successor.
       while (j >= 0) {
         if (items.get(j).compareTo(items.get(j + 1)) < 0) {
           break;
@@ -70,15 +95,24 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
         --j;
       }
 
-      // If there is no digit satisfying the above constraint, then we have reached the largest
-      // lexicographic permutation.
-      if (j < 0) {
-        items = null;
-        return old;
-      }
+      return j;
+    }
 
-      // Find the smallest value greater than the value at j which succeeds j. Note, due to the way
-      // we selected j, j+1 is a safe starting value.
+    /** Find the index of the smallest value after j which exceeds the element at j.
+     *
+     * <p>We search the sublist <code>items[j+1:]</code> for elements strictly greater than `j`
+     * which are strictly less than the current value of `k`.
+     *
+     * <p>For an initial value, we set `k = j + 1` because `j` was chosen such that its immediate
+     * successor would be strictly greater, so we can guarantee that `j+1` would be valid.
+     *
+     * <p>If the value of `j` passed in is invalid then we return -1 to prevent looping forever
+     * or producing invalid results without generating an error.
+     */
+    private int getLeastLargerValueInTail(int j) {
+      if (j < 0) {
+        return -1;
+      }
       int k = j + 1;
       for (int i = j + 2; i < items.size(); ++i) {
         T atI = items.get(i);
@@ -88,12 +122,7 @@ public class LexicographicPermuter<T extends Comparable<T>> implements Iterable<
           k = i;
         }
       }
-
-      // Swap the values at j and k, sorting all values after j.
-      Collections.swap(items, j, k);
-      Collections.sort(items.subList(j+1, items.size()));
-
-      return old;
+      return k;
     }
   }
 }
