@@ -1,5 +1,6 @@
 # Copied from https://github.com/korfuri/bazel-travis/blob/master/.travis.yml
 # Updated to use Bazel 0.8.0
+# Changed to cache bazel.deb
 
 dist: trusty
 
@@ -12,11 +13,14 @@ addons:
       - pkg-config
 
 before_install:
-  - wget https://github.com/bazelbuild/bazel/releases/download/0.8.0/bazel_0.8.0-linux-x86_64.deb
-  - sha256sum -c tools/bazel_0.8.0-linux-x86_64.deb.sha256
+  - while sha256sum -c tools/bazel_0.8.0-linux-x86_64.deb.sha256 ; [ $? -ne 0 ] ; do wget https://github.com/bazelbuild/bazel/releases/download/0.8.0/bazel_0.8.0-linux-x86_64.deb ; done
   - sudo dpkg -i bazel_0.8.0-linux-x86_64.deb
 
 # END copied code
+
+cache:
+  - /home/travis/.cache/bazel/
+  - bazel_0.8.0-linux-x86_64.deb
 
 script:
   - bazel test //src/test/java/me/psanders/utils:all
