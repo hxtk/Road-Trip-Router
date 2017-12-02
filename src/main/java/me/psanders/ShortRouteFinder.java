@@ -104,9 +104,6 @@ public class ShortRouteFinder {
     } catch (ParseException e) {
       // TODO(hxtk): Exit gracefully on exception.
       e.printStackTrace();
-    } catch (ApiException | InterruptedException | IOException e) {
-      // TODO(hxtk): Exit gracefully on exception.
-      e.printStackTrace();
     }
 
     return null;
