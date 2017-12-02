@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 
 import com.google.maps.GeoApiContext;
+import com.google.maps.errors.OverDailyLimitException;
 import org.apache.commons.cli.CommandLine;
 
 import com.google.maps.errors.ApiException;
@@ -60,6 +61,22 @@ public class LocationGraphFactoryTest {
     }
   }
 
+  @Test
+  public void exitsCleanlyIfQueryLimitExceeded() {
+    LocationGraphFactory lgf = new LocationGraphFactory(
+        new OverLimitMatrixFactory(), null);
+
+    try {
+      Assert.assertNull(lgf.build());
+    } catch (Exception e) {
+      e.printStackTrace();
+      Assert.assertTrue(false);
+    }
+  }
+
+  /** This class simulates a failure of internet connection.
+   *
+   */
   private class NoConnectionMatrixFactory extends DistanceMatrixFactory {
 
     public NoConnectionMatrixFactory() {
@@ -70,6 +87,18 @@ public class LocationGraphFactoryTest {
     public DistanceMatrix build()
         throws IllegalStateException, InterruptedException, ApiException, IOException {
       throw new ConnectException();
+    }
+  }
+
+  private class OverLimitMatrixFactory extends DistanceMatrixFactory {
+    public OverLimitMatrixFactory() {
+      super(null, null, null);
+    }
+
+    @Override
+    public DistanceMatrix build()
+        throws IllegalStateException, InterruptedException, ApiException, IOException {
+      throw new OverDailyLimitException("This account has exceeded its daily limit");
     }
   }
 }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.HashMap;
 
+import com.google.maps.errors.OverDailyLimitException;
+import com.google.maps.errors.OverQueryLimitException;
 import me.psanders.graph.MatrixGraph;
 import org.apache.commons.cli.CommandLine;
 
@@ -28,6 +30,9 @@ public class LocationGraphFactory {
     DistanceMatrix distMatrix;
     try {
       distMatrix = factory.build();
+    } catch (OverDailyLimitException | OverQueryLimitException e) {
+      System.out.println("Your API Key has exceeded its quota. Please wait before trying again.");
+      return null;
     } catch (ConnectException e) {
       System.out.println("Connection failed. Are you sure you're connected to the internet?");
       return null;
