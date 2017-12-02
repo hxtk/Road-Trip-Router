@@ -95,7 +95,7 @@ public class ShortRouteFinder {
     } catch (AlreadySelectedException e) {
       System.out.println(e.getLocalizedMessage() + "\n");
       usage(options);
-    } catch (IllegalStateException | MissingOptionException e) {
+    } catch (MissingOptionException e) {
       System.out.println("You must include a valid Google Maps Services API key\n");
       usage(options);
     } catch (ParseException e) {

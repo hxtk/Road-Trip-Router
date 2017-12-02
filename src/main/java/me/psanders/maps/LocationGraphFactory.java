@@ -17,12 +17,10 @@ import com.google.maps.errors.ApiException;
 public class LocationGraphFactory {
 
   private DistanceMatrixFactory factory;
-  private String[] places;
   private CommandLine flags;
 
-  public LocationGraphFactory(DistanceMatrixFactory factory, String[] places, CommandLine flags) {
+  public LocationGraphFactory(DistanceMatrixFactory factory, CommandLine flags) {
     this.factory = factory;
-    this.places = places;
     this.flags = flags;
   }
 
@@ -33,24 +31,29 @@ public class LocationGraphFactory {
     } catch (ConnectException e) {
       System.out.println("Connection failed. Are you sure you're connected to the internet?");
       return null;
+    } catch (IllegalStateException e) {
+      System.out.println("Your Google Maps API key was invalid.");
+      return null;
     }
 
     // Generate the list of labels to look up matrix indices.
     HashMap<String, Integer> labels = new HashMap<String, Integer>();
-    for (int i = 0; i < places.length; ++i) {
-      labels.put(places[i], i);
+    for (int i = 0; i < distMatrix.originAddresses.length; ++i) {
+      labels.put(distMatrix.originAddresses[i], i);
     }
 
     // Convert the DistanceMatrix object to a 2D array for the MatrixGraph.
-    Long[][] matrix = new Long[places.length][places.length];
-    for (int i = 0; i < places.length; ++i) {
-      for (int j = 0; j < places.length; ++j) {
+    Long[][] matrix =
+        new Long[distMatrix.originAddresses.length][distMatrix.originAddresses.length];
+
+    for (int i = 0; i < distMatrix.originAddresses.length; ++i) {
+      for (int j = 0; j < distMatrix.originAddresses.length; ++j) {
         if (i == j) continue;  // Skip the diagonal axis.
 
         DistanceMatrixElement element = distMatrix.rows[i].elements[j];
         switch (element.status) {
           case NOT_FOUND:
-            System.out.println("We couldn't resolve \"" + places[i]
+            System.out.println("We couldn't resolve \"" + distMatrix.originAddresses[i]
                 + "\" so we're trying to route around it.");
             // Fallthrough
           case ZERO_RESULTS:
