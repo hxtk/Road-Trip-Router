@@ -1,5 +1,5 @@
 java_library(
-    name = "utils_tests",
+    name = "maps_tests",
     srcs = glob(["*.java"]),
     deps = [
         "//src/main/java/me/psanders/maps:maps",
@@ -14,6 +14,11 @@ java_test(
     name = "LocationGraphFactoryTest",
     size = "small",
     runtime_deps = [
-        ":utils_tests"
+        ":maps_tests",
+        "@gson//jar",
+        "@okhttp//jar",
+        "@okio//jar",
+        "@slf4j_api//jar",
+        "@slf4j_simple//jar",
     ]
 )
