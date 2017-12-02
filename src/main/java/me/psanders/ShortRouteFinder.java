@@ -41,6 +41,9 @@ import me.psanders.maps.LocationGraphFactory;
  * <p>Distinct places are delimited by the distinct elements of the array.
  * Consult your command line's documentation for more information. Usually
  * you will group using quotes ('"') or escaped spaces ('\ ').
+ *
+ * <p>Retrieving the distance matrix and converting it to a graph is outsourced to other classes,
+ * specifically <code>DistanceMatrixFactory</code> and <code>LocationGraphFactory</code>.
  */
 public class ShortRouteFinder {
 
@@ -78,7 +81,7 @@ public class ShortRouteFinder {
 
 
       // Retrieve the graph of distances between each pair of places passed in to args.
-      Graph graph = new LocationGraphFactory(matrixFactory, places, flags).build();
+      Graph graph = new LocationGraphFactory(matrixFactory, flags).build();
 
       // Find the optimal route.
       return new HCycleFinder(
