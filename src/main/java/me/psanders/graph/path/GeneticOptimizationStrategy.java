@@ -51,19 +51,29 @@ public class GeneticOptimizationStrategy<L, T extends Number>
   public Cycle getOptimalCycle(Graph<L, T> graph) {
     int numNodes = graph.getNodes().size();
     int batchSize = Math.max(numNodes * 2, POPULATION);
-    int numParents = batchSize / 10;
 
     ArrayList<L> labels = new ArrayList();
     labels.addAll(graph.getNodes());
     Cycle start = new Cycle(graph, labels);
 
-    // Initially use a population of completely random orderings.
+    // Generate an initial population of random species.
     Cycle[] paths = new Cycle[batchSize];
     for (int i = 0; i < batchSize; ++i) {
       List order = start.getOrder();
       Collections.shuffle(order, this.random);
       paths[i] = new Cycle(graph, order);
     }
+
+    // Run genetic algorithm on the population to evolve a fit species.
+    paths = evolve(graph, paths);
+
+    return paths[0];
+  }
+
+  private Cycle[] evolve(Graph<L, T> graph, Cycle[] paths) {
+    int numNodes = graph.getNodes().size();
+    int batchSize = Math.max(numNodes * 2, POPULATION);
+    int numParents = batchSize / 10;
 
     // Number of swaps such that CROSSOVER is the probability of an element remaining unmoved.
     // This does not guarantee an exact crossover rate, but the average will be correct.
@@ -96,6 +106,6 @@ public class GeneticOptimizationStrategy<L, T extends Number>
       Arrays.sort(paths);
     }
 
-    return paths[0];
+    return paths;
   }
 }

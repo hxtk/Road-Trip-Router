@@ -108,16 +108,13 @@ public class LocationGraphFactory {
       return factory.build();
     } catch (OverDailyLimitException | OverQueryLimitException e) {
       System.out.println("Your API Key has exceeded its quota. Please wait before trying again.");
-      return null;
     } catch (ConnectException e) {
       System.out.println("Connection failed. Are you sure you're connected to the internet?");
-      return null;
     } catch (IllegalStateException e) {
       System.out.println("Your Google Maps API key was invalid.");
-      return null;
     } catch (ApiException | InterruptedException | IOException e) {
       e.printStackTrace();
-      return null;
     }
+    return null;
   }
 }
