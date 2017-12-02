@@ -3,9 +3,6 @@
 
 package me.psanders.graph.path;
 
-import java.util.Random;
-import java.util.Arrays;
-
 import me.psanders.graph.Graph;
 
 public class HCycleFinder {

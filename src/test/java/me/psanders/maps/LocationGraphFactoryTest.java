@@ -5,15 +5,15 @@ package me.psanders.maps;
 import java.io.IOException;
 import java.net.ConnectException;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Options;
+
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.OverDailyLimitException;
-import org.apache.commons.cli.CommandLine;
-
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
 
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.Options;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +61,9 @@ public class LocationGraphFactoryTest {
     }
   }
 
+  /** The program should catch the error if the API Key supplied is valid but over its quota.
+   *
+   */
   @Test
   public void exitsCleanlyIfQueryLimitExceeded() {
     LocationGraphFactory lgf = new LocationGraphFactory(
@@ -90,6 +93,9 @@ public class LocationGraphFactoryTest {
     }
   }
 
+  /** This class simulates an account that has exceeded its quota.
+   *
+   */
   private class OverLimitMatrixFactory extends DistanceMatrixFactory {
     public OverLimitMatrixFactory() {
       super(null, null, null);
