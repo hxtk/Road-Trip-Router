@@ -1,4 +1,4 @@
-# Road Trip Router [![Build Status](https://travis-ci.org/hxtk/Road-Trip-Router.png?branch=master)](https://travis-ci.org/hxtk/Road-Trip-Router)
+# Road Trip Router [![Build Status](https://travis-ci.org/hxtk/Road-Trip-Router.png?branch=master)](https://travis-ci.org/hxtk/Road-Trip-Router) [![Code Climate](https://codeclimate.com/github/hxtk/Road-Trip-Router/badges/gpa.svg)](https://codeclimate.com/github/hxtk/Road-Trip-Router)
 
 Using genetic algorithms, we build a route that is *probably* almost optimal for visiting several places.
 
